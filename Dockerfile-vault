@@ -1,0 +1,11 @@
+# File: Dockerfile-vault
+FROM hashicorp/vault:latest
+
+# Copy Vault configuration
+COPY vault-config/vault.hcl /vault/config/vault.hcl
+
+# Set the entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# Start Vault   
+CMD ["server", "-config=/vault/config/vault.hcl"]

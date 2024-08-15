@@ -1,21 +1,20 @@
 # File: Dockerfile-nginx
 FROM nginx:latest
 
-# Install necessary tools
-RUN apt-get update && apt-get install -y curl jq cron
-
 # Set up directories
 RUN mkdir -p /etc/nginx/ssl /usr/share/nginx/html
 
+# Args
+ARG SERVER_NAME
+
 # Copy configurations and scripts
+COPY nginx-config/$SERVER_NAME.conf /etc/nginx/nginx.conf
+COPY nginx-config/tls/nginx_ca.crt /etc/nginx/ssl/trusted_clients.crt
+COPY nginx-config/tls/$SERVER_NAME.crt  /etc/nginx/ssl/server.crt
+COPY nginx-config/tls/$SERVER_NAME.key  /etc/nginx/ssl/server.key
 COPY nginx-config/index.html /usr/share/nginx/html/index.html
-COPY nginx-config/get-cert.sh /usr/local/bin/get-cert.sh
 
-# Make the script executable
-RUN chmod +x /usr/local/bin/get-cert.sh
+# Expose HTTPS port
+EXPOSE 443
 
-# Set up cron job to renew certificate
-RUN echo "0 */12 * * * /usr/local/bin/get-cert.sh >> /var/log/cron.log 2>&1" | crontab -
-
-# Start Nginx and cron
-CMD service cron start && nginx -g 'daemon off;'
+CMD ["nginx", "-g", "daemon off;"]

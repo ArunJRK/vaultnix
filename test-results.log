@@ -1,0 +1,40 @@
+Starting mTLS cross-connection tests...
+Using certificates from ./nginx-config/tls directory
+Server configuration from servers.json
+
+Parsed servers:
+nginx1:8081
+nginx2:8082
+nginx3:8083
+
+======================================
+Testing: nginx1 -> nginx2 (Port 8082)
+Sending request...
+Connection successful! (HTTP 200 OK)
+
+======================================
+Testing: nginx1 -> nginx3 (Port 8083)
+Sending request...
+Authenticated but forbidden. (HTTP 403 Forbidden)
+
+======================================
+Testing: nginx2 -> nginx1 (Port 8081)
+Sending request...
+Connection successful! (HTTP 200 OK)
+
+======================================
+Testing: nginx2 -> nginx3 (Port 8083)
+Sending request...
+Authenticated but forbidden. (HTTP 403 Forbidden)
+
+======================================
+Testing: nginx3 -> nginx1 (Port 8081)
+Sending request...
+Connection successful! (HTTP 200 OK)
+
+======================================
+Testing: nginx3 -> nginx2 (Port 8082)
+Sending request...
+Authenticated but forbidden. (HTTP 403 Forbidden)
+mTLS cross-connection tests complete!
+Successful tests: 6 / 6

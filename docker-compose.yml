@@ -1,22 +1,15 @@
 # File: docker-compose.yml
-version: '3.8'
-
 services:
   nginx1:
     build:
       context: .
       dockerfile: Dockerfile-nginx
+      args:
+        SERVER_NAME: nginx1
     ports:
-      - "8081:443"
-    environment:
-      - VAULT_ADDR=https://vault:8200
-      - VAULT_CACERT=/etc/ssl/certs/vault-ca.crt
-      - ROLE_ID=<ROLE_ID_1>
-      - SECRET_ID=<SECRET_ID_1>
-      - COMMON_NAME=nginx1.example.com
+      - "8081:8081"
     volumes:
-      - ./nginx-config/nginx1.conf:/etc/nginx/nginx.conf:ro
-      - ./vault-config/vault.crt:/etc/ssl/certs/vault-ca.crt:ro
+      - ./nginx-logs/nginx1:/var/log/nginx
     networks:
       - mtls-network
 
@@ -24,17 +17,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-nginx
+      args:
+        SERVER_NAME: nginx2
     ports:
-      - "8082:443"
-    environment:
-      - VAULT_ADDR=https://vault:8200
-      - VAULT_CACERT=/etc/ssl/certs/vault-ca.crt
-      - ROLE_ID=<ROLE_ID_2>
-      - SECRET_ID=<SECRET_ID_2>
-      - COMMON_NAME=nginx2.example.com
+      - "8082:8082"
     volumes:
-      - ./nginx-config/nginx2.conf:/etc/nginx/nginx.conf:ro
-      - ./vault-config/vault.crt:/etc/ssl/certs/vault-ca.crt:ro
+      - ./nginx-logs/nginx2:/var/log/nginx
     networks:
       - mtls-network
 
@@ -42,17 +30,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-nginx
+      args:
+        SERVER_NAME: nginx3
     ports:
-      - "8083:443"
-    environment:
-      - VAULT_ADDR=https://vault:8200
-      - VAULT_CACERT=/etc/ssl/certs/vault-ca.crt
-      - ROLE_ID=<ROLE_ID_3>
-      - SECRET_ID=<SECRET_ID_3>
-      - COMMON_NAME=nginx3.example.com
+      - "8083:8083"
     volumes:
-      - ./nginx-config/nginx3.conf:/etc/nginx/nginx.conf:ro
-      - ./vault-config/vault.crt:/etc/ssl/certs/vault-ca.crt:ro
+      - ./nginx-logs/nginx3:/var/log/nginx
     networks:
       - mtls-network
 

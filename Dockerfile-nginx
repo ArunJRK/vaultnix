@@ -9,7 +9,8 @@ ARG SERVER_NAME
 
 # Copy configurations and scripts
 COPY nginx-config/$SERVER_NAME.conf /etc/nginx/nginx.conf
-COPY nginx-config/tls/nginx_ca.crt /etc/nginx/ssl/trusted_clients.crt
+COPY nginx-config/tls/nginx_ca.crt /etc/nginx/ssl/nginx_ca.crt
+COPY nginx-config/tls/trusted_clients.crt /etc/nginx/ssl/trusted_clients.crt
 COPY nginx-config/tls/$SERVER_NAME.crt  /etc/nginx/ssl/server.crt
 COPY nginx-config/tls/$SERVER_NAME.key  /etc/nginx/ssl/server.key
 COPY nginx-config/index.html /usr/share/nginx/html/index.html

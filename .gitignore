@@ -3,3 +3,4 @@ vault.log
 nginx-logs/
 .DS_Store
 spring-test/.archive/
+prometheus.yml

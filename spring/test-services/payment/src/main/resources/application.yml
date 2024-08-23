@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: payment
+  ssl:
+    bundle:
+      jks:
+        payment: # Give your bundle a name
+          key:
+            alias: payment
+          keystore:
+            location: classpath:payment.jks
+            password: changeit
+          truststore:
+            location: classpath:client-truststore.jks
+            password: changeit
+  webflux:
+    ssl:
+      bundle: payment
+    webclient:
+      ssl:
+        hostname-verification: true
+
+server:
+  port: 8443
+  ssl:
+    bundle: payment # Reference your SSL bundle here
+    client-auth: NEED
+
+order:
+  service:
+    url: https://localhost:6443
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security:
+          web: DEBUG
+    com:
+      innowate:
+        services:
+          payment: DEBUG

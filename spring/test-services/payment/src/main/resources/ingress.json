@@ -1,0 +1,10 @@
+{
+  "name": "nginx1",
+  "hostname": "nginx1",
+  "port": 443,
+  "ingress": [
+    "nginx3",
+    "nginx4",
+    "nginx56"
+  ]
+}

@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: order
+  ssl:
+    bundle:
+      jks:
+        order:
+          key:
+            alias: order
+          keystore:
+            location: classpath:order.jks
+            password: changeit
+          truststore:
+            location: classpath:client-truststore.jks
+            password: changeit
+  webflux:
+    ssl:
+      bundle: order
+    webclient:
+      ssl:
+        hostname-verification: false
+
+server:
+  port: 6443
+  ssl:
+    bundle: order
+    client-auth: NEED
+
+payment:
+  service:
+    url: https://localhost:8443

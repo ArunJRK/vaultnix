@@ -2,3 +2,4 @@ vault-data/
 vault.log
 nginx-logs/
 .DS_Store
+spring-test/.archive/

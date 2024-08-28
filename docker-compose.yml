@@ -67,6 +67,44 @@ services:
     networks:
       - mtls-network
 
+  uptrace:
+    image: uptrace/uptrace:1.5.5
+    volumes:
+      - ./uptrace-config:/etc/uptrace
+    ports:
+      - "14317:14317"  # OpenTelemetry gRPC
+      - "14318:14318"  # OpenTelemetry HTTP
+      - "8080:8080"    # Uptrace UI
+    depends_on:
+      - postgres
+    environment:
+      - UPTRACE_POSTGRES_DSN=postgres://uptrace:uptrace_password@postgres:5432/uptrace?sslmode=disable
+    networks:
+      - mtls-network
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: uptrace
+      POSTGRES_USER: uptrace
+      POSTGRES_PASSWORD: uptrace_password
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - mtls-network
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:22.8
+    volumes:
+      - ./clickhouse-data:/var/lib/clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    networks:
+      - mtls-network
+
 networks:
   mtls-network:
     driver: bridge

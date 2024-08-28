@@ -9,9 +9,14 @@ cluster_addr = "http://0.0.0.0:8201"
 ui = true
 
 telemetry {
-  disable_hostname = true
-  prometheus_retention_time = "30s"
+  prometheus_retention_time = "24h"
+  disable_hostname          = true
+  otlp_exporter {
+    address = "uptrace:14317"
+    protocol = "grpc"
+  }
 }
+
 
 # New configuration for unauthenticated metrics access
 listener "tcp" {

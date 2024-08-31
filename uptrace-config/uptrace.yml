@@ -2,7 +2,9 @@
 ch:
   addr: clickhouse:9000
   user: default
-  password: 
+  password:
+  database: uptrace
+  buffer_pool_size: 1000000
 
 pg:
   addr: postgres:5432
@@ -23,6 +25,9 @@ projects:
   - id: 1
     name: "My Project"
     token: "secret-token"
+  - id: 2
+    name: "prometheus"
+    token: "secret"
 
 groups:
   - name: "Admins"
@@ -35,9 +40,29 @@ auth:
       password: "changeme"
 
 
-prometheus:
-  - name: prometheus
-    scrape_configs:
-      - job_name: 'prometheus'
-        static_configs:
-          - targets: ['prometheus:9090']
+receivers:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'prometheus'
+          scrape_interval: 15s
+          static_configs:
+            - targets: ['prometheus:9090']
+
+processors:
+  batch:
+
+exporters:
+  otlp:
+    endpoint: "uptrace:14317"
+    tls:
+      insecure: true
+    headers:
+      "uptrace-dsn": "http://secret@uptrace:14317/2"
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: [batch]
+      exporters: [otlp]

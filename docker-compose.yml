@@ -64,11 +64,21 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - mtls-network
+
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
     networks:
       - mtls-network
 
   uptrace:
-    image: uptrace/uptrace:1.5.5
+    image: uptrace/uptrace:1.7.6
     volumes:
       - ./uptrace-config:/etc/uptrace
     ports:
@@ -96,12 +106,21 @@ services:
       - mtls-network
 
   clickhouse:
-    image: clickhouse/clickhouse-server:22.8
+    image: clickhouse/clickhouse-server:head-alpine
     volumes:
       - ./clickhouse-data:/var/lib/clickhouse
     ports:
       - "8123:8123"
       - "9000:9000"
+    networks:
+      - mtls-network
+  
+  fluentbit:
+    image: fluent/fluent-bit
+    volumes:
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+    ports:
+      - "24224:24224"
     networks:
       - mtls-network
 

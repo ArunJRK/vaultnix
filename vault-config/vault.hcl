@@ -26,3 +26,8 @@ listener "tcp" {
     unauthenticated_metrics_access = true
   }
 }
+
+audit {
+  type = "file"
+  path = "stdout"
+}

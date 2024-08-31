@@ -1,0 +1,26 @@
+receivers:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'prometheus'
+          scrape_interval: 15s
+          static_configs:
+            - targets: ['prometheus:9090']
+
+processors:
+  batch:
+
+exporters:
+  otlp:
+    endpoint: "uptrace:14317"
+    tls:
+      insecure: true
+    headers:
+      uptrace-dsn: "http://secret@0.0.0.0:14317/2"
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: [batch]
+      exporters: [otlp]

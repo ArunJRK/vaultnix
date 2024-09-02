@@ -50,7 +50,8 @@ services:
     volumes:
       - ./vault-config:/vault/config
       - ./vault-data:/vault/data
-      - ./metrics_policy.hcl:/vault/config/metrics_policy.hcl  # Add this line
+      - ./metrics_policy.hcl:/vault/config/metrics_policy.hcl 
+      - ./vault-logs:/vault/logs
     command: server
     networks:
       - mtls-network
@@ -116,11 +117,16 @@ services:
       - mtls-network
   
   fluentbit:
-    image: fluent/fluent-bit
+    image: fluent/fluent-bit:3.1.6
     volumes:
       - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./vault-logs:/vault/logs
+      - ./fluent-bit-logs:/fluent-bit/log
     ports:
       - "24224:24224"
+    depends_on:
+      - vault
+      - uptrace
     networks:
       - mtls-network
 

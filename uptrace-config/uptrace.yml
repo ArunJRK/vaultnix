@@ -1,4 +1,8 @@
 # File: ./uptrace-config/uptrace.yml
+logging:
+  level: debug
+  format: text
+
 ch:
   addr: clickhouse:9000
   user: default

@@ -6,3 +6,5 @@ spring-test/.archive/
 prometheus.yml
 postgres-data/
 clickhouse-data/
+spring-logs/
+vault-logs/

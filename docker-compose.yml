@@ -55,6 +55,31 @@ services:
     command: server
     networks:
       - mtls-network
+
+  spring-order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-order
+    volumes: 
+      - ./spring-logs:/spring/logs
+    environment:
+      - UPTRACE_ENDPOINT=http://uptrace:14317 
+      - UPTRACE_DSN=http://spring-secret@uptrace:14318?grpc=14317
+    ports:
+      - "8081:8081"
+    networks:
+      - mtls-network
+
+  spring-payment-service:
+    build:
+      context: .
+      dockerfile: Dockerfile-payment
+    volumes:
+      - ./spring-logs:/spring/logs
+    ports:
+      - "8082:8082"
+    networks:
+      - mtls-network
   
 
   prometheus:
@@ -122,6 +147,7 @@ services:
       - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
       - ./vault-logs:/vault/logs
       - ./fluent-bit-logs:/fluent-bit/log
+      - ./spring-logs:/spring/logs
     ports:
       - "24224:24224"
     depends_on:

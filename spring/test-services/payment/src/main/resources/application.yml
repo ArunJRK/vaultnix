@@ -20,6 +20,28 @@ spring:
       ssl:
         hostname-verification: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    trace:
+      show-details: always
+
+  otlp:
+    metrics:
+      export:
+        url: "http://uptrace:14318/v1/metrics"
+        aggregationTemporality: "cumulative"
+        headers:
+          uptrace-dsn: "http://spring-secret@uptrace:14318"
+          protocol: grpc
+        step: 30s
+  
+
 server:
   port: 8443
   ssl:
@@ -41,3 +63,9 @@ logging:
       innowate:
         services:
           payment: DEBUG
+
+  file:
+    name: /spring/logs/application.log
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/health")
-class Health {
+@RequestMapping("/ping")
+class Ping {
 
     @GetMapping
-    fun getHealth(): ResponseEntity<Map<String, String>> {
+    fun getPing(): ResponseEntity<Map<String, String>> {
         val healthStatus = mapOf(
             "status" to "UP",
-            "message" to "Order service is healthy",
+            "message" to "Pong",
             "timestamp" to java.time.Instant.now().toString()
         )
         return ResponseEntity.ok(healthStatus)

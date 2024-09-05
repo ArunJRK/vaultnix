@@ -32,6 +32,9 @@ projects:
   - id: 2
     name: "prometheus"
     token: "secret"
+  - id: 3
+    name: "spring"
+    token: "spring-secret"
 
 groups:
   - name: "Admins"

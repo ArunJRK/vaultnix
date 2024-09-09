@@ -35,6 +35,9 @@ projects:
   - id: 3
     name: "spring"
     token: "spring-secret"
+  - id: 4
+    name: "spring2"
+    token: "secret2"
 
 groups:
   - name: "Admins"

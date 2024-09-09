@@ -51,35 +51,45 @@ services:
       - ./vault-config:/vault/config
       - ./vault-data:/vault/data
       - ./metrics_policy.hcl:/vault/config/metrics_policy.hcl 
-      - ./vault-logs:/vault/logs
     command: server
     networks:
       - mtls-network
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: vault.logs
 
-  spring-order-service:
+  order:
     build:
       context: .
       dockerfile: Dockerfile-order
-    volumes: 
-      - ./spring-logs:/spring/logs
     environment:
       - UPTRACE_ENDPOINT=http://uptrace:14317 
       - UPTRACE_DSN=http://spring-secret@uptrace:14318?grpc=14317
     ports:
-      - "8081:8081"
+      - "6443:6443"
     networks:
       - mtls-network
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: spring.order.logs
 
-  spring-payment-service:
+  payment:
     build:
       context: .
       dockerfile: Dockerfile-payment
-    volumes:
-      - ./spring-logs:/spring/logs
     ports:
-      - "8082:8082"
+      - "8443:8443"
     networks:
       - mtls-network
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: localhost:24224
+        tag: spring.payment.logs
   
 
   prometheus:
@@ -93,13 +103,6 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
-    networks:
-      - mtls-network
-
-  node-exporter:
-    image: prom/node-exporter
-    ports:
-      - "9100:9100"
     networks:
       - mtls-network
 
@@ -141,18 +144,24 @@ services:
     networks:
       - mtls-network
   
+
   fluentbit:
     image: fluent/fluent-bit:3.1.6
     volumes:
       - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
-      - ./vault-logs:/vault/logs
-      - ./fluent-bit-logs:/fluent-bit/log
-      - ./spring-logs:/spring/logs
     ports:
       - "24224:24224"
-    depends_on:
-      - vault
-      - uptrace
+    networks:
+      - mtls-network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
       - mtls-network
 

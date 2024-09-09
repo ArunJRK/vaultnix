@@ -4,7 +4,7 @@ spring:
   ssl:
     bundle:
       jks:
-        payment: # Give your bundle a name
+        payment:
           key:
             alias: payment
           keystore:
@@ -30,31 +30,30 @@ management:
       show-details: always
     trace:
       show-details: always
-
   otlp:
     metrics:
       export:
         url: "http://uptrace:14318/v1/metrics"
         aggregationTemporality: "cumulative"
         headers:
-          uptrace-dsn: "http://spring-secret@uptrace:14318"
+          uptrace-dsn: "http://spring-secret2@uptrace:14318?grpc=14317"
           protocol: grpc
         step: 30s
-  
 
 server:
   port: 8443
   ssl:
-    bundle: payment # Reference your SSL bundle here
+    bundle: payment
     client-auth: NEED
 
 order:
   service:
-    url: https://localhost:6443
+    url: https://order:6443
 
 logging:
   level:
     root: INFO
+    org.springframework.cloud.sleuth: DEBUG
     org:
       springframework:
         security:
@@ -63,9 +62,5 @@ logging:
       innowate:
         services:
           payment: DEBUG
-
-  file:
-    name: /spring/logs/application.log
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

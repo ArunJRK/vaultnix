@@ -8,3 +8,4 @@ postgres-data/
 clickhouse-data/
 spring-logs/
 vault-logs/
+grafana-data/

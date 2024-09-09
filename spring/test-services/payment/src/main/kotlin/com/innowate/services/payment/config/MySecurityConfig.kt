@@ -23,6 +23,8 @@ class DynamicHostnamePredicate {
         allowedHostnames.add("localhost:8443")
         allowedHostnames.add("localhost:6443")
         allowedHostnames.add("localhost")
+        allowedHostnames.add("payment")
+        allowedHostnames.add("order")
         println("allowedHostnames:::::::::::  $allowedHostnames")
     }
 

@@ -5,9 +5,10 @@ import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 
+
 @Component
 class PaymentHealth(
-    private val webClient: WebClient
+    private val webClient: WebClient,
 ) {
 
     @Value("\${payment.service.url}")
@@ -15,13 +16,21 @@ class PaymentHealth(
 
     @Scheduled(fixedRate = 15000)
     fun checkPaymentServiceHealth() {
-        webClient.get()
-            .uri("$paymentServiceUrl/health")
-            .retrieve()
-            .bodyToMono(String::class.java)
-            .subscribe(
-                { response -> println("Payment service health check: $response \n\n") },
-                { error -> println("Payment service health check failed: ${error.message}") }
-            )
+
+        try {
+
+            webClient.get()
+                .uri("$paymentServiceUrl/health")
+                .retrieve()
+                .bodyToMono(String::class.java)
+                .doOnSuccess { response ->
+                    println("Payment service health check: $response \n\n")
+                }
+                .doOnError { error ->
+                    println("Payment service health check failed: ${error.message}")
+                }
+                .subscribe()
+        } finally {
+        }
     }
 }

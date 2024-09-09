@@ -3,10 +3,17 @@ FROM gradle:8.8-jdk17 as build
 
 WORKDIR /app
 
-# Copy and build the Order service
-COPY ./spring/test-services/payment/build.gradle.kts ./spring/test-services/settings.gradle.kts /app/payment/
-COPY ./spring/test-services/payment/src /app/payment/src
-RUN cd payment && gradle build --no-daemon
+# Copy the Gradle configuration files
+COPY ./spring/test-services/payment/build.gradle.kts ./spring/test-services/settings.gradle.kts ./
+
+# Download dependencies (this layer will be cached unless build.gradle.kts changes)
+RUN gradle dependencies --no-daemon
+
+# Copy the source code
+COPY ./spring/test-services/payment/src ./src
+
+# Build the application
+RUN gradle build --no-daemon --build-cache
 
 
 # Use a smaller base image for runtime
@@ -15,10 +22,10 @@ FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy the built JARs for both services
-COPY --from=build /app/payment/build/libs/*.jar /app/payment.jar
+COPY --from=build /app/build/libs/*.jar /app/payment.jar
 
 # Expose the ports
-EXPOSE 8081
+EXPOSE 8443
 
 # Start both services
-CMD ["sh", "-c", "java -jar /app/payment.jar"]
+CMD ["java", "-jar", "/app/payment.jar"]

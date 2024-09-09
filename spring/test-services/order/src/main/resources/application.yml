@@ -37,16 +37,24 @@ management:
         url: "http://uptrace:14318/v1/metrics"
         aggregationTemporality: "cumulative"
         headers:
-          uptrace-dsn: "http://spring-secret@uptrace:14318"
+          uptrace-dsn: "http://spring-secret2@uptrace:14318?grpc=14317"
           protocol: grpc
         step: 30s
 
 logging:
-  file:
-    name: /spring/logs/application.log
+  level:
+    root: INFO
+    org.springframework.cloud.sleuth: DEBUG
+    org:
+      springframework:
+        security:
+          web: DEBUG
+    com:
+      innowate:
+        services:
+          order: DEBUG
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
 
 server:
   port: 6443
@@ -56,4 +64,4 @@ server:
 
 payment:
   service:
-    url: https://localhost:8443
+    url: https://payment:8443

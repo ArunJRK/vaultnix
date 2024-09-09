@@ -13,10 +13,6 @@ ui = true
 telemetry {
   prometheus_retention_time = "24h"
   disable_hostname          = true
-  otlp_exporter {
-    address = "uptrace:14317"
-    protocol = "grpc"
-  }
 }
 
 

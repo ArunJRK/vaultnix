@@ -63,9 +63,11 @@ logging:
       innowate:
         services:
           payment: DEBUG
+    
+  config: classpath:logback-spring.xml
 
-  file:
-    name: /spring/logs/application.log
+  # file:
+  #   name: /spring/logs/application.log
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
     file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

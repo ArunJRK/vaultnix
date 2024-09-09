@@ -30,7 +30,7 @@ subprojects {
         implementation("org.springframework.security:spring-security-config")
         implementation("org.springframework.boot:spring-boot-starter-actuator")
         implementation("io.micrometer:micrometer-core")
-        implementation("iio.micrometer:micrometer-registry-otlp")
+        implementation("io.micrometer:micrometer-registry-otlp")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
 

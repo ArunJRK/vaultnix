@@ -35,6 +35,14 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	// Logback dependencies
+    implementation("ch.qos.logback:logback-core")
+    implementation("ch.qos.logback:logback-classic")
+    implementation("com.sndyuk:logback-more-appenders:1.8.7")
+    implementation("org.fluentd:fluent-logger:0.3.4")
+    implementation("com.fasterxml.jackson.core:jackson-core")
+    implementation("ch.qos.logback.contrib:logback-json-classic:0.1.5")
+    implementation("ch.qos.logback.contrib:logback-jackson:0.1.5")
 }
 
 kotlin {

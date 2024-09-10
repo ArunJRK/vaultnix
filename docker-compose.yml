@@ -158,6 +158,8 @@ services:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    depends_on:
+      - clickhouse
     volumes:
       - ./grafana-data:/var/lib/grafana
     environment:

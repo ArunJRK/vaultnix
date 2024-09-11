@@ -28,13 +28,24 @@ dependencies {
 	implementation("org.springframework.security:spring-security-core")
 	implementation("org.springframework.security:spring-security-config")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("io.micrometer:micrometer-core")
 	implementation("io.projectreactor.netty:reactor-netty")
-    implementation("io.micrometer:micrometer-registry-otlp")
+
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	implementation(platform("io.micrometer:micrometer-tracing-bom:1.3.4"))
+	implementation("io.micrometer:micrometer-core")
+	implementation("io.micrometer:micrometer-tracing")
+    implementation("io.micrometer:micrometer-registry-otlp")
+	implementation("io.micrometer:micrometer-tracing-bridge-otel")
+
+	implementation(platform("io.opentelemetry:opentelemetry-bom:1.42.1"))
+	implementation("io.opentelemetry:opentelemetry-api")
+	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+
+
 }
 
 kotlin {

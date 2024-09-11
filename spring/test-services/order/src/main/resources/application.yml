@@ -25,26 +25,37 @@ management:
     web:
       exposure:
         include: "*"
+  
+  tracing:
+    sampling:
+      probability: 1.0
+
   endpoint:
     health:
       show-details: always
     trace:
       show-details: always
-
+      
   otlp:
+    tracing:
+      endpoint: "http://uptrace:14318/v1/traces"
+      compression: "none"
+      timeout: 10s
+      headers:
+        uptrace-dsn: "http://new@0.0.0.0:14318?grpc=14317"
+
     metrics:
       export:
         url: "http://uptrace:14318/v1/metrics"
         aggregationTemporality: "cumulative"
         headers:
-          uptrace-dsn: "http://spring-secret2@uptrace:14318?grpc=14317"
+          uptrace-dsn: "http://new@0.0.0.0:14318?grpc=14317"
           protocol: grpc
         step: 30s
 
 logging:
   level:
     root: INFO
-    org.springframework.cloud.sleuth: DEBUG
     org:
       springframework:
         security:
@@ -53,8 +64,9 @@ logging:
       innowate:
         services:
           order: DEBUG
+    io.micrometer: DEBUG
   pattern:
-    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:%5p} [${spring.application.name:},%X{traceId:-},%X{spanId:-}] [%t] %logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}"
 
 server:
   port: 6443

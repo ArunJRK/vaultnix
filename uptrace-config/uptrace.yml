@@ -38,6 +38,9 @@ projects:
   - id: 4
     name: "spring2"
     token: "secret2"
+  - id: 5
+    name: "new"
+    token: "new"
 
 groups:
   - name: "Admins"

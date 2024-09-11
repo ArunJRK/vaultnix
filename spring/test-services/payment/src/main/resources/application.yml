@@ -22,6 +22,8 @@ management:
 
   tracing:
     enabled: true
+    propagation:
+      type: w3c
     baggage: 
       enabled: true
       correlation:
@@ -35,7 +37,7 @@ management:
 
   otlp:
     tracing:
-      endpoint: "http://uptrace:14318"
+      endpoint: "http://uptrace:14318/v1/traces"
       compression: "gzip"
       timeout: 10s
       headers:

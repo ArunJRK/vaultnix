@@ -64,9 +64,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-order
-    environment:
-      - UPTRACE_ENDPOINT=http://uptrace:14317 
-      - UPTRACE_DSN=http://spring-secret@uptrace:14318?grpc=14317
     ports:
       - "6443:6443"
     networks:

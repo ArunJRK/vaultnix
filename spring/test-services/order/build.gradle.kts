@@ -34,9 +34,14 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-otlp")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.modelmapper:modelmapper:2.3.8")
 
 	implementation(platform("io.opentelemetry:opentelemetry-bom:1.42.1"))
 	implementation("io.opentelemetry:opentelemetry-api")
+
+	implementation("org.postgresql:postgresql:42.6.0")
 
 }
 

@@ -45,7 +45,7 @@ dependencies {
 	implementation("io.opentelemetry:opentelemetry-api")
 	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 
-
+	implementation("org.postgresql:postgresql:42.6.0")
 }
 
 kotlin {

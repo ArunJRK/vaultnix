@@ -20,6 +20,18 @@ spring:
       ssl:
         hostname-verification: false
 
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+        ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://localhost:5432/uptrace
+    platform: postgres
+    username: uptrace
+    password: uptrace_password
+    driverClassName: org.postgresql.Driver
+
 management:
   endpoints:
     web:
@@ -38,7 +50,7 @@ management:
       
   otlp:
     tracing:
-      endpoint: "http://uptrace:14318/v1/traces"
+      endpoint: "http://localhost:14318/v1/traces"
       compression: "none"
       timeout: 10s
       headers:
@@ -46,7 +58,7 @@ management:
 
     metrics:
       export:
-        url: "http://uptrace:14318/v1/metrics"
+        url: "http://localhost:14318/v1/metrics"
         aggregationTemporality: "cumulative"
         headers:
           uptrace-dsn: "http://new@0.0.0.0:14318?grpc=14317"
